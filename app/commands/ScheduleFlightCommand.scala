@@ -4,7 +4,7 @@ import models.{Flight, FlightStatus}
 
 class ScheduleFlightCommand extends Command[Flight]{
   override def execute(t: Flight) : Flight = {
-    t.flight_status = FlightStatus.SCHEDULED
+    t.flight_status = FlightStatus.SCHEDULED.toString
     return t
   }
 
