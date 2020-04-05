@@ -1,9 +1,11 @@
 package services
 
 import java.time.{Clock, Instant}
+
 import javax.inject._
 import play.api.Logger
 import play.api.inject.ApplicationLifecycle
+
 import scala.concurrent.Future
 
 /**
@@ -21,7 +23,7 @@ import scala.concurrent.Future
  * application's [[ApplicationLifecycle]] to register a stop hook.
  */
 @Singleton
-class ApplicationTimer @Inject() (clock: Clock, appLifecycle: ApplicationLifecycle) {
+class ApplicationTimer @Inject()(clock: Clock, appLifecycle: ApplicationLifecycle) {
 
   private val logger: Logger = Logger(this.getClass)
 

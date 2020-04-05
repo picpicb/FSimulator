@@ -1,11 +1,9 @@
 package commands
 
-import models.{Flight, FlightStatus}
+import models.Flight
 
-class ScheduleFlightCommand extends Command[Flight]{
-  override def execute(t: Flight) : Flight = {
-    t.flight_status = FlightStatus.SCHEDULED.toString
-    return t
+class ScheduleFlightCommand extends Command[Flight] {
+  override def execute(flight: Flight): Flight = {
+    flight.setStatus("SCHEDULED")
   }
-
 }

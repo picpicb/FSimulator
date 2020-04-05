@@ -1,21 +1,51 @@
 package controllers
 
-import java.util.Date
-
-import javax.inject.{Inject, Singleton}
-import models.{Flight, FlightStatus}
-import play.api.libs.json.Json
+import javax.inject.Inject
+import models.Flight
+import play.api.libs.json._
 import play.api.mvc.{AbstractController, ControllerComponents}
+import repositories.FlightRepositoryImpl
+import services.FlightServiceImpl
 
-@Singleton
-class FlightController @Inject() (cc: ControllerComponents) extends AbstractController(cc) {
+import scala.concurrent.{ExecutionContext, Future}
 
-  def create = TODO
+class FlightController @Inject()( implicit ec: ExecutionContext ,cc: ControllerComponents, flightServiceImpl: FlightServiceImpl) extends AbstractController(cc) {
 
-  def index = Action {
-    val flight = new Flight("1","AIR52",FlightStatus.CREATED.toString,"CDG","JFK", new Date(), new Date())
-    Ok(Json.toJson(flight))
+  def index = Action.async {
+    flightServiceImpl.findAll().map(flights => Ok(Json.toJson(flights)))
   }
 
-  def read(id: String) = TODO
+  def read(flight_number: String) = Action.async {
+    flightServiceImpl.find(flight_number).map { flight =>
+      flight.map { flight =>
+        Ok(Json.toJson(flight))
+      }.getOrElse(NotFound("NOT_FOUND"))
+    }
+  }
+
+  def create = Action.async(parse.json) {
+    _.body.validate[Flight]
+      .map {
+        flight => flightServiceImpl.save(flight).map {
+          _=> Created("CREATED")
+        }
+      }.getOrElse(Future.successful(BadRequest ("INVALID_FORMAT")))
+  }
+
+  def update(flight_number: String) = Action.async(parse.json) {
+    _.body.validate[Flight]
+      .map {
+        flight => flightServiceImpl.update(flight_number,flight).map {
+          case Some(flight) => Ok(Json.toJson(flight))
+          case _            => NotFound("NOT_FOUND")
+        }
+      }.getOrElse(Future.successful(BadRequest ("INVALID_FORMAT")))
+  }
+
+  def remove(flight_number: String) = Action.async {
+    flightServiceImpl.remove(flight_number).map {
+      case Some(flight) => Ok(Json.toJson(flight))
+      case _ => NotFound("NOT_FOUND")
+    }
+  }
 }
