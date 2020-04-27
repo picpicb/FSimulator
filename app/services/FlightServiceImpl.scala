@@ -1,7 +1,7 @@
 package services
 
 import commands.{Command, ScheduleFlightCommand}
-import events.FlightEvent
+
 import javax.inject.Inject
 import kafka.KafkaProducerFlight
 import models.Flight
@@ -20,6 +20,7 @@ class FlightServiceImpl @Inject()(implicit ec: ExecutionContext, flightRepositor
     flightRepository.findByFlightNumber(flight_number = flight_number)
 
   def save(flight: Flight): Future[WriteResult] = {
+
     flightRepository.save(scheduleFlightCommand.execute(flight))
 //    KafkaProducerFlight.sendToKafka()
   }

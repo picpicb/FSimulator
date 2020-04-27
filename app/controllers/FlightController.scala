@@ -1,5 +1,6 @@
 package controllers
 
+import commands.DelayFlightCommand
 import javax.inject.Inject
 import models.Flight
 import play.api.libs.json._
@@ -9,7 +10,7 @@ import services.FlightServiceImpl
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class FlightController @Inject()( implicit ec: ExecutionContext ,cc: ControllerComponents, flightServiceImpl: FlightServiceImpl) extends AbstractController(cc) {
+class FlightController @Inject()( implicit ec: ExecutionContext ,cc: ControllerComponents, flightServiceImpl: FlightServiceImpl, delayCommand : DelayFlightCommand) extends AbstractController(cc) {
 
   def index = Action.async {
     flightServiceImpl.findAll().map(flights => Ok(Json.toJson(flights)))
@@ -35,12 +36,17 @@ class FlightController @Inject()( implicit ec: ExecutionContext ,cc: ControllerC
   def update(flight_number: String) = Action.async(parse.json) {
     _.body.validate[Flight]
       .map {
-        flight => flightServiceImpl.update(flight_number,flight).map {
-          case Some(flight) => Ok(Json.toJson(flight))
-          case _            => NotFound("NOT_FOUND")
+        flight => flight.flight_status match{
+          case "DELAYED" => delayCommand.execute(flightServiceImpl.find(flight_number),flight)
         }
+//        flight => flightServiceImpl.update(flight_number,flight).map {
+//          case Some(flight) => Ok(Json.toJson(flight))
+//          case _            => NotFound("NOT_FOUND")
+//        }
       }.getOrElse(Future.successful(BadRequest ("INVALID_FORMAT")))
   }
+
+
 
   def remove(flight_number: String) = Action.async {
     flightServiceImpl.remove(flight_number).map {

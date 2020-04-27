@@ -20,7 +20,7 @@ libraryDependencies ++= Seq(
   "io.circe" %% "circe-parser"
 ).map(_ % circeVersion)
 
-libraryDependencies ++= Seq(jdbc, ehcache, ws, specs2 % Test, guice, "org.reactivemongo" %% "play2-reactivemongo" % "0.20.3-play28","com.typesafe.play" %% "play-iteratees-reactive-streams" % "2.6.1","org.apache.kafka" % "kafka-clients" % "2.4.1","com.typesafe.play" %% "play-json-joda" % "2.8.1","com.goyeau" %% "kafka-streams-circe" % "0.6")
+libraryDependencies ++= Seq(jdbc, ehcache, ws, specs2 % Test, guice, "org.reactivemongo" %% "play2-reactivemongo" % "0.20.3-play28","com.typesafe.play" %% "play-iteratees-reactive-streams" % "2.6.1","org.apache.kafka" % "kafka-clients" % "2.4.1","com.typesafe.play" %% "play-json-joda" % "2.8.1","com.goyeau" %% "kafka-streams-circe" % "0.6","net.liftweb" %% "lift-json" % "3.4.1")
 routesGenerator := InjectedRoutesGenerator
 RoutesKeys.routesImport += "play.modules.reactivemongo.PathBindables._"
 unmanagedResourceDirectories in Test <+= baseDirectory(_ / "target/web/public/test")
