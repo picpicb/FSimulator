@@ -42,7 +42,7 @@ class FlightController @Inject()( implicit ec: ExecutionContext ,cc: ControllerC
           //case "LANDED" =>
           //case "FLYING" =>
         }
-          Ok(Json.toJson(flight))
+          Future.successful(Ok(Json.toJson(flight)))
       }.getOrElse(Future.successful(BadRequest ("INVALID_FORMAT")))
   }
 

@@ -3,16 +3,25 @@ package commands
 
 import models.Flight
 import events.FlightEvent
+import javax.inject.Inject
+import play.api.mvc.ControllerComponents
 import services.FlightServiceImpl
 
-class DelayFlightCommand  extends Command[Flight] {
-  val flightEvent = new FlightEvent
-  //val flightService = new FlightServiceImpl()
+import scala.concurrent.{ExecutionContext, Future}
 
-  override def execute(flight: Flight): Flight = {
-    val f = flight.setStatus("DELAYED")
-    //print(flightEvent.updatedFlightEvent(f))
-    return f
+class DelayFlightCommand  @Inject()( implicit ec: ExecutionContext , flightServiceImpl: FlightServiceImpl) extends Command[Flight] {
+  val flightEvent = new FlightEvent
+
+  override def execute(modifiedFlight: Flight): Flight = {
+
+    flightServiceImpl.find(modifiedFlight.flight_number).map {
+      case Some(flight) => print(flightEvent.updatedFlightEvent(modifiedFlight, flight, "DelayedFlight"))
+      case _            => null
+    }
+
+
+
+    return modifiedFlight
   }
 
 
