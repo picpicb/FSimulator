@@ -34,17 +34,26 @@ class FlightController @Inject()( implicit ec: ExecutionContext ,cc: ControllerC
   }
 
   def update(flight_number: String) = Action.async(parse.json) {
-    _.body.validate[Flight]
-      .map {
+    _.body.validate[Flight].map {
         flight => flight.flight_status match{
-          case "DELAYED" => delayCommand.execute(flightServiceImpl.find(flight_number),flight)
+          case "DELAYED" => delayCommand.execute(flight)
+          //case "BOARDING" =>
+          //case "CANCELED" =>
+          //case "LANDED" =>
+          //case "FLYING" =>
         }
-//        flight => flightServiceImpl.update(flight_number,flight).map {
-//          case Some(flight) => Ok(Json.toJson(flight))
-//          case _            => NotFound("NOT_FOUND")
-//        }
+          Ok(Json.toJson(flight))
       }.getOrElse(Future.successful(BadRequest ("INVALID_FORMAT")))
   }
+
+
+  //        flight => flightServiceImpl.update(flight_number,flight).map {
+  //          case Some(flight) => Ok(Json.toJson(flight))
+  //          case _            => NotFound("NOT_FOUND")
+  //        }
+
+
+
 
 
 
