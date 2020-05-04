@@ -2,18 +2,14 @@ package kafka
 
 import java.util.Properties
 
-import com.goyeau.kafka.streams.circe.CirceSerdes
-import events.FlightEvent
-import models.Flight
 import org.apache.kafka.clients.producer.{Callback, KafkaProducer, ProducerConfig, ProducerRecord, RecordMetadata}
-import org.joda.time.DateTime
 import reactivemongo.bson.BSONObjectID
 
 object KafkaProducerFlight {
 
   val bootstrapServer = "127.0.0.1:9092"
   val groupId = "flight-id"
-  val topic = "flight"
+  val topic = "flight-event"
 
   val props: Properties = {
     val prop = new Properties()

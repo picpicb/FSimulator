@@ -11,7 +11,7 @@ import repositories.FlightRepositoryImpl
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class FlightServiceImpl @Inject()(implicit ec: ExecutionContext, flightRepository: FlightRepositoryImpl,scheduleFlightCommand: ScheduleFlightCommand) {
+class FlightServiceImpl @Inject()(implicit ec: ExecutionContext, flightRepository: FlightRepositoryImpl) {
 
   def findAll(): Future[Seq[Flight]] =
     flightRepository.findAll()

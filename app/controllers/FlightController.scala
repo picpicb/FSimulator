@@ -1,6 +1,6 @@
 package controllers
 
-import commands.DelayFlightCommand
+import commands.{DelayFlightCommand, ScheduleFlightCommand}
 import javax.inject.Inject
 import models.Flight
 import play.api.libs.json._
@@ -10,7 +10,7 @@ import services.FlightServiceImpl
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class FlightController @Inject()( implicit ec: ExecutionContext ,cc: ControllerComponents, flightServiceImpl: FlightServiceImpl, delayCommand : DelayFlightCommand) extends AbstractController(cc) {
+class FlightController @Inject()( implicit ec: ExecutionContext ,cc: ControllerComponents, flightServiceImpl: FlightServiceImpl, delayCommand : DelayFlightCommand, scheduleFlightCommand: ScheduleFlightCommand) extends AbstractController(cc) {
 
   def index = Action.async {
     flightServiceImpl.findAll().map(flights => Ok(Json.toJson(flights)))
@@ -27,9 +27,8 @@ class FlightController @Inject()( implicit ec: ExecutionContext ,cc: ControllerC
   def create = Action.async(parse.json) {
     _.body.validate[Flight]
       .map {
-        flight => flightServiceImpl.save(flight).map {
-          _=> Created("CREATED")
-        }
+        flight => scheduleFlightCommand.execute(flight)
+          Future.successful(Ok(Json.toJson(flight)))
       }.getOrElse(Future.successful(BadRequest ("INVALID_FORMAT")))
   }
 
