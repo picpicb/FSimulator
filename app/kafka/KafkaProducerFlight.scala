@@ -2,7 +2,7 @@ package kafka
 
 import java.util.Properties
 
-import org.apache.kafka.clients.producer.{Callback, KafkaProducer, ProducerConfig, ProducerRecord, RecordMetadata}
+import org.apache.kafka.clients.producer._
 import reactivemongo.bson.BSONObjectID
 
 object KafkaProducerFlight {
@@ -32,21 +32,4 @@ object KafkaProducerFlight {
     producer.send(new ProducerRecord(topic, BSONObjectID.generate().stringify, event), callback)
     producer.close()
   }
-
-//  def main(args: Array[String]): Unit = {
-//
-//    val callback = new Callback {
-//      override def onCompletion(metadata: RecordMetadata, exception: Exception): Unit = {
-//        println("Callback" + metadata.toString)
-//      }
-//    }
-//
-//    val flight = Flight(_id = Option(BSONObjectID.generate()),flight_number="ABCDE",flight_status="CREATED",from_airport="JFK",dest_airport="CDG",departure_date = new DateTime("2020-04-01T05:06:07.000+02:00"),arrival_date = new DateTime("2020-04-01T05:06:07.000+02:00"))
-//    val producer = new KafkaProducer[String, Flight](props)
-//
-//    for (k <- 1 to 2) {
-//      producer.send(new ProducerRecord(topic, s"key ${k}", flight), callback)
-//    }
-//    producer.close()
-//  }
 }

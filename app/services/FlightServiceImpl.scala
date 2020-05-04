@@ -1,11 +1,7 @@
 package services
 
-import commands.{Command, ScheduleFlightCommand}
-
 import javax.inject.Inject
-import kafka.KafkaProducerFlight
 import models.Flight
-import play.api.libs.json._
 import reactivemongo.api.commands.WriteResult
 import repositories.FlightRepositoryImpl
 
@@ -23,9 +19,9 @@ class FlightServiceImpl @Inject()(implicit ec: ExecutionContext, flightRepositor
     flightRepository.save(flight)
   }
 
-  def update(flight_number: String,flight: Flight): Future[Option[Flight]] =
-    flightRepository.update(flight_number = flight_number,flight = flight)
+  def update(flight_number: String, flight: Flight): Future[Option[Flight]] =
+    flightRepository.update(flight_number = flight_number, flight = flight)
 
-  def remove(flight_number: String):Future[Option[Flight]] =
+  def remove(flight_number: String): Future[Option[Flight]] =
     flightRepository.remove(flight_number = flight_number)
 }
