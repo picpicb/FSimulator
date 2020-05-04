@@ -21,7 +21,7 @@ class FlightEvent {
     val originalSet = Map("flight_status" -> context.flight_status, "arrival_date" -> context.arrival_date.toString(),"departure_date" -> context.departure_date.toString(),"dest_airport" -> context.dest_airport,"from_airport" -> context.from_airport)
     val modifiedSet = Map("flight_status" -> flight.flight_status, "arrival_date" -> flight.arrival_date.toString(),"departure_date" -> flight.departure_date.toString(),"dest_airport" -> flight.dest_airport,"from_airport" -> flight.from_airport)
 
-    val jsonPayload = write((originalSet.toSet diff modifiedSet.toSet).toMap)
+    val jsonPayload = write((modifiedSet.toSet diff originalSet.toSet).toMap)
     val e = Event(command,flight.flight_number,jsonPayload)
     return write(e)
   }

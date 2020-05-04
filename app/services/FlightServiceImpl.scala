@@ -20,9 +20,7 @@ class FlightServiceImpl @Inject()(implicit ec: ExecutionContext, flightRepositor
     flightRepository.findByFlightNumber(flight_number = flight_number)
 
   def save(flight: Flight): Future[WriteResult] = {
-
-    flightRepository.save(scheduleFlightCommand.execute(flight))
-//    KafkaProducerFlight.sendToKafka()
+    flightRepository.save(flight)
   }
 
   def update(flight_number: String,flight: Flight): Future[Option[Flight]] =

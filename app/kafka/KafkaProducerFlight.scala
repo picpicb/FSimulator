@@ -3,6 +3,7 @@ package kafka
 import java.util.Properties
 
 import com.goyeau.kafka.streams.circe.CirceSerdes
+import events.FlightEvent
 import models.Flight
 import org.apache.kafka.clients.producer.{Callback, KafkaProducer, ProducerConfig, ProducerRecord, RecordMetadata}
 import org.joda.time.DateTime
@@ -18,21 +19,21 @@ object KafkaProducerFlight {
     val prop = new Properties()
     prop.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer)
     prop.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer")
-    prop.put("value.serializer", classOf[CustomSerializer])
+    prop.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer")
     prop.put(ProducerConfig.ACKS_CONFIG, "all")
     prop
   }
 
-  def sendToKafka(flight: Flight): Unit = {
+  def sendToKafka(event: String): Unit = {
 
     val callback = new Callback {
       override def onCompletion(metadata: RecordMetadata, exception: Exception): Unit = {
         println("Callback" + metadata.toString)
       }
     }
-    val producer = new KafkaProducer[String, Flight](props)
+    val producer = new KafkaProducer[String, String](props)
 
-    producer.send(new ProducerRecord(topic, flight.flight_number, flight), callback)
+    producer.send(new ProducerRecord(topic, BSONObjectID.generate().stringify, event), callback)
     producer.close()
   }
 
