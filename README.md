@@ -5,7 +5,7 @@ You will find in this repository a basic scala event sourcing API with kafka int
 
 ## Prerequisites
 
-###
+### MongoDB
 You need to have a local MongoDB instance running on port 27017 with an existing "fsimulator" database
 
 
