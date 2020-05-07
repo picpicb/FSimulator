@@ -11,6 +11,7 @@ You need to have a local MongoDB instance running on port 27017
 
 ### Run Zookeeper
 Use the following command from console to run zookeeper from your zookeeper installation folder
+(Use shell script (.sh) for UNIX systems)
 
 ```
 zookeeper-server-start.bat config\zookeeper.properties
@@ -19,18 +20,20 @@ zookeeper-server-start.bat config\zookeeper.properties
 ### Run Kafka
 
 Use the following command from console to run kafka from your kafka installation folder
-
+(Use shell script (.sh) for UNIX systems)
 ```
 kafka-server-start.bat config\server.properties
 ```
 
 Use the following command from console to create a kafka topic
+(Use shell script (.sh) for UNIX systems)
 
 ```
 kafka-topics.bat --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic flight-event
 ```
 
 Use the following command from console to watch the kafka topic (consumer)
+(Use shell script (.sh) for UNIX systems)
 
 ```
 kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic flight-event --from-beginning
