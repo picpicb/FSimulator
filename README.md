@@ -6,18 +6,18 @@ You will find in this repository a basic scala event sourcing API with kafka int
 ## Prerequisites
 
 ### Run Zookeeper
-Use the following command from console to run zookeeper
+Use the following command from console to run zookeeper from your zookeeper installation folder
 
 ```
-zookeeper-server-start.bat C:\kafka_2.12-2.4.1\config\zookeeper.properties
+zookeeper-server-start.bat config\zookeeper.properties
 ```
 
 ### Run Kafka
 
-Use the following command from console to run kafka
+Use the following command from console to run kafka from your kafka installation folder
 
 ```
-kafka-server-start.bat C:\kafka_2.12-2.4.1\config\server.properties
+kafka-server-start.bat config\server.properties
 ```
 
 Use the following command from console to create a kafka topic
